@@ -49,6 +49,12 @@
     <ClCompile Include="..\..\Src\MCAL\target\led.cpp">
       <Filter>Src\MCAL\target</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\target\timer.cpp">
+      <Filter>Src\MCAL\target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\host\timer.cpp">
+      <Filter>Src\MCAL\host</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Src\MCAL\led.h">

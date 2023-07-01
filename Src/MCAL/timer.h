@@ -8,13 +8,7 @@
   {
   #endif
 
-  static inline void mcal_timer_delay(void)
-  {
-    for(volatile uint32_t count = 0U; count < (uint32_t) UINT32_C(50000000); ++count)
-    {
-      ;
-    }
-  }
+  void mcal_timer_delay(void);
 
   #if defined(__cplusplus)
   }
