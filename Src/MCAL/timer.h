@@ -8,7 +8,7 @@
   {
   #endif
 
-  void timer_delay(void);
+  void mcal_timer_delay(void);
 
   #if defined(__cplusplus)
   }

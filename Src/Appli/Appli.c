@@ -3,13 +3,13 @@
 
 int main()
 {
-  led_init();
+  mcal_led_init();
 
   for(;;)
   {
-    led_toggle();
+    mcal_led_toggle();
 
-    timer_delay();
+    mcal_timer_delay();
   }
 
   return 0;

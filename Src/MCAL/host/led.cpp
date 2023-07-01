@@ -2,8 +2,8 @@
 
 extern "C"
 {
-  void led_init  (void) { }
-  void led_on    (void) { }
-  void led_off   (void) { }
-  void led_toggle(void) { }
+  void mcal_led_init  (void) { }
+  void mcal_led_on    (void) { }
+  void mcal_led_off   (void) { }
+  void mcal_led_toggle(void) { }
 }
