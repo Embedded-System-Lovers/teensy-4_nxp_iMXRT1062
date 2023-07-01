@@ -23,5 +23,5 @@ jobs:
         shell: cmd
         run: |
           MSBuild -m teensy-4_nxp_iMXRT1062.sln -p:useenv=false -p:Configuration=${{ matrix.suite }} -p:Platform=x64 /t:Rebuild
-          ..\Bin\${{ matrix.suite }}_x64\teensy-4_nxp_iMXRT1062.exe
-        working-directory: ./Build/VS
+          dir ..\Bin\${{ matrix.suite }}_x64\teensy-4_nxp_iMXRT1062.exe
+        working-directory: .\Build\VS
