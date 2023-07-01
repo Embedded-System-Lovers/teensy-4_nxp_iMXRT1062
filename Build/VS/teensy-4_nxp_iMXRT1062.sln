@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.33403.129
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33529.622
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "teensy-4_nxp_iMXRT1062", "teensy-4_nxp_iMXRT1062.vcxproj", "{7CD059D0-8761-4D68-A410-DDDCEAD8467E}"
 EndProject
@@ -19,6 +19,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appli", "Appli", "{A9649A3E
 	ProjectSection(SolutionItems) = preProject
 		..\Make\Appli\imxrt1062.ld = ..\Make\Appli\imxrt1062.ld
 		..\Make\Appli\target.ld = ..\Make\Appli\target.ld
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{64EC9AFB-AFC9-46ED-A9C6-95445C85A674}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{A696943D-0B12-4AFF-AFDB-49A5E1534FC6}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.github\workflows\teensy-4_nxp_iMXRT1062.yml = ..\..\.github\workflows\teensy-4_nxp_iMXRT1062.yml
 	EndProjectSection
 EndProject
 Global
@@ -41,6 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0190D334-0639-463F-834C-470510AC80A0} = {AEAA226C-F166-430D-A04A-4EA164AA02DD}
 		{A9649A3E-B7DB-49C2-8E0C-C1AE135C5830} = {0190D334-0639-463F-834C-470510AC80A0}
+		{A696943D-0B12-4AFF-AFDB-49A5E1534FC6} = {64EC9AFB-AFC9-46ED-A9C6-95445C85A674}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {16C469A2-EC24-43F2-BA2A-030EB96C2D00}
