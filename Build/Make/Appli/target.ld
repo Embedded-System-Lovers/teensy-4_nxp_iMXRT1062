@@ -22,15 +22,15 @@ _rom_end   = 0x60010000;
 
 /* The beginning and end (i.e., the top) of the stack */
 /* Set up a stack with a size of 4K */
-_stack_begin = 0x20007000;
-_stack_end   = 0x20008000;
+_stack_begin = 0x20207000;
+_stack_end   = 0x20208000;
 
-__initial_stack_pointer = 0x20008000 - 4;
+__initial_stack_pointer = 0x20208000 - 4;
 
 MEMORY
 {
   ROM(rx)  : ORIGIN = 0x60000000, LENGTH = 2M
-  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 512K
+  RAM(rwx) : ORIGIN = 0x20200000, LENGTH = 32K - 4K
 }
 
 SECTIONS
@@ -114,7 +114,7 @@ SECTIONS
 
   PROVIDE(__ROM_END = .) ;
 
-  . = 0x20000000;
+  . = 0x20200000;
   . = ALIGN(4);
 
   /* The ROM-to-RAM initialized data section */
