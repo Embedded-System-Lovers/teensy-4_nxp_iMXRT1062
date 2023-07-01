@@ -11,6 +11,15 @@
     <Filter Include="Src\startup">
       <UniqueIdentifier>{bc1852ea-f568-409b-afec-7425216f130e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\MCAL">
+      <UniqueIdentifier>{f578cac1-3d87-46a2-a09d-edaf71924404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\MCAL\target">
+      <UniqueIdentifier>{f605ff91-9866-4d59-be6d-f13397c1bd21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\MCAL\host">
+      <UniqueIdentifier>{248d60e5-258b-4379-bf40-f1d90eed4d90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Src\Appli\Appli.c">
@@ -34,5 +43,25 @@
     <ClCompile Include="..\..\Src\Appli\bootdata.c">
       <Filter>Src\Appli</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\host\led.cpp">
+      <Filter>Src\MCAL\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\target\led.cpp">
+      <Filter>Src\MCAL\target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\target\timer.cpp">
+      <Filter>Src\MCAL\target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\host\timer.cpp">
+      <Filter>Src\MCAL\host</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Src\MCAL\led.h">
+      <Filter>Src\MCAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\timer.h">
+      <Filter>Src\MCAL</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
