@@ -17,7 +17,9 @@ READELF         = $(PATH_TOOLS_GCC)/arm-none-eabi-readelf.exe
 
 MAKE            = $(PATH_TOOLS_UTIL)/make/make.exe
 
-CFLAGS         = -Wall -Wextra -Wpedantic                                         \
+CFLAGS         = -Wall                                                            \
+                 -Wextra                                                          \
+                 -Wpedantic                                                       \
                 -O2                                                               \
                 -mcpu=cortex-m4                                                   \
                 -mtune=cortex-m4                                                  \
@@ -36,29 +38,62 @@ CPPFLAGS       = $(CFLAGS)                                                      
                  -fno-exceptions                                                  \
                  -fno-use-cxa-atexit
 
-all : clean check_it compile
 
+LDFLAGS        = $(CPPFLAGS)                                                      \
+                 -nostdlib                                                        \
+                 -nostartfiles                                                    \
+                 -specs=nano.specs                                                \
+                 -specs=nosys.specs                                               \
+                 -T $(PATH_ENV)/Appli/target.ld                                   \
+                 -Wl,--print-memory-usage                                         \
+                 -Wl,-Map,$(PATH_BIN)/target.map
+
+SRC_FILES      = $(PATH_SRC)/Appli/Appli                                          \
+                 $(PATH_SRC)/Appli/bootdata                                       \
+                 $(PATH_SRC)/MCAL/target/led                                      \
+                 $(PATH_SRC)/MCAL/target/timer                                    \
+                 $(PATH_SRC)/startup/crt0                                         \
+                 $(PATH_SRC)/startup/crt1                                         \
+                 $(PATH_SRC)/startup/crt0_init_ram                                \
+                 $(PATH_SRC)/startup/int_vect                                     \
+                 $(PATH_SRC)/startup/mcal_gcc_cxx_completion
+
+
+VPATH := $(subst \,/,$(sort $(dir $(SRC_FILES)) $(PATH_OBJ)))
+
+
+FILES_O := $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(SRC_FILES))))
+
+
+ifeq ($(MAKECMDGOALS),build)
+-include $(subst .o,.d,$(FILES_O))
+endif
+
+all : clean version $(PATH_BIN)/target.elf
+
+
+.PHONY : clean
 clean :
 	if not exist $(subst /,\,$(PATH_OBJ)) mkdir $(subst /,\,$(PATH_OBJ))
 	if not exist $(subst /,\,$(PATH_BIN)) mkdir $(subst /,\,$(PATH_BIN))
-	del /Q $(subst /,\,$(PATH_BIN)/*.*)
+	del /Q $(subst /,\,$(PATH_BIN)/target.*)
 	del /Q $(subst /,\,$(PATH_OBJ)/*.*)
 
-check_it :
+.PHONY : version
+version :
 	$(MAKE) -v
 	$(CC) -v
 
-compile :
-	$(CC) -x c -std=c11 $(CFLAGS) -c $(PATH_SRC)/Appli/Appli.c -o $(PATH_OBJ)/Appli.o
-	$(CC) -x c -std=c11 $(CFLAGS) -c $(PATH_SRC)/Appli/bootdata.c -o $(PATH_OBJ)/bootdata.o
-	$(CC) -x c++ -std=c++17 $(CFLAGS) -c $(PATH_SRC)/MCAL/target/led.cpp -o $(PATH_OBJ)/led.o
-	$(CC) -x c++ -std=c++17 $(CFLAGS) -c $(PATH_SRC)/MCAL/target/timer.cpp -o $(PATH_OBJ)/timer.o
-	$(CC) -x c++ -std=c++17 $(CFLAGS) -c $(PATH_SRC)/startup/crt0.cpp -o $(PATH_OBJ)/crt0.o
-	$(CC) -x c++ -std=c++17 $(CFLAGS) -c $(PATH_SRC)/startup/crt1.cpp -o $(PATH_OBJ)/crt1.o
-	$(CC) -x c++ -std=c++17 $(CFLAGS) -c $(PATH_SRC)/startup/crt0_init_ram.cpp -o $(PATH_OBJ)/crt0_init_ram.o
-	$(CC) -x c++ -std=c++17 $(CFLAGS) -c $(PATH_SRC)/startup/int_vect.cpp -o $(PATH_OBJ)/int_vect.o
-	$(CC) -x c++ -std=c++17 $(CFLAGS) -c $(PATH_SRC)/startup/mcal_gcc_cxx_completion.cpp -o $(PATH_OBJ)/mcal_gcc_cxx_completion.o
-	$(CC) -x none $(CFLAGS) -nostdlib -nostartfiles -T $(PATH_ENV)/Appli/target.ld -Wl,--print-memory-usage -Wl,-Map,$(PATH_BIN)/target.map $(PATH_OBJ)/bootdata.o $(PATH_OBJ)/Appli.o $(PATH_OBJ)/led.o $(PATH_OBJ)/timer.o $(PATH_OBJ)/crt0.o $(PATH_OBJ)/crt0_init_ram.o $(PATH_OBJ)/crt1.o $(PATH_OBJ)/int_vect.o $(PATH_OBJ)/mcal_gcc_cxx_completion.o -o $(PATH_BIN)/target.elf
+$(PATH_BIN)/target.elf : $(FILES_O)
+	$(CC) -x none $(LDFLAGS) $(FILES_O) -o $(PATH_BIN)/target.elf
 	$(OBJCOPY) $(PATH_BIN)/target.elf -O ihex $(PATH_BIN)/target.hex
 	$(OBJDUMP) $(PATH_BIN)/target.elf -d >> $(PATH_BIN)/target.list
 	$(READELF) $(PATH_BIN)/target.elf -a >> $(PATH_BIN)/target.readelf
+
+$(PATH_OBJ)/%.o : %.c
+	@-echo +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
+	@-$(CC) -x c -std=c11 $(CFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
+
+$(PATH_OBJ)/%.o : %.cpp
+	@-echo +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
+	@$(CC) -x c++ -std=c++17 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
