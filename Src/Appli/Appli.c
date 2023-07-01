@@ -1,35 +1,25 @@
-#if !defined(_MSC_VER)
-#define RCC_AHB1ENR *(volatile unsigned*) 0x40023830U
-#else
-static unsigned RCC_AHB1ENR;
-#endif
 
 #if !defined(_MSC_VER)
-#define GPIOA_MODER *(volatile unsigned*) 0x40020000U
+  #define LED_INIT()   *((volatile unsigned int*)(0x401BC004UL)) |= (1ul << 3ul)
+  #define LED_ON()     *((volatile unsigned int*)(0x401BC084UL)) |= (1ul << 3ul)
+  #define LED_OFF()    *((volatile unsigned int*)(0x401BC088UL)) |= (1ul << 3ul)
+  #define LED_TOGGLE() *((volatile unsigned int*)(0x401BC08CUL)) |= (1ul << 3ul)
 #else
-static unsigned GPIOA_MODER;
-#endif
-
-#if !defined(_MSC_VER)
-#define GPIOA_ODR *(volatile unsigned*) 0x40020014U
-#else
-static unsigned GPIOA_ODR;
+  #define LED_INIT()
+  #define LED_ON()
+  #define LED_OFF()
+  #define LED_TOGGLE()
 #endif
 
 int main()
 {
-  // Supply PortA energy.
-  RCC_AHB1ENR |= 1U;
-
-  // Set portA.5 direction to output.
-  GPIOA_MODER |= (1U << (5U * 2U));
-  GPIOA_MODER &= ~(1U << ((5U * 2U) + 1U));
+  LED_INIT();
 
   for(;;)
   {
-    GPIOA_ODR ^= (1U << 5); // Toggle PortA.5.
+    LED_TOGGLE();
 
-    for(volatile unsigned count = 0U; count < 100000U; ++count) { ; }
+    for(volatile unsigned count = 0U; count < 10000000U; ++count) { ; }
   }
 
   return 0;

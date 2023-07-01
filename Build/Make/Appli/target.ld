@@ -17,8 +17,8 @@ OUTPUT_ARCH(arm)
 
 /* The beginning and end of the program ROM area */
 /* Set up a ROM area with a size of 64K */
-_rom_begin = 0x08000000;
-_rom_end   = 0x08010000;
+_rom_begin = 0x60000000;
+_rom_end   = 0x60010000;
 
 /* The beginning and end (i.e., the top) of the stack */
 /* Set up a stack with a size of 4K */
@@ -29,14 +29,27 @@ __initial_stack_pointer = 0x20008000 - 4;
 
 MEMORY
 {
-  ROM(rx)  : ORIGIN = 0x08000000, LENGTH = 64K
-  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x7000
+  ROM(rx)  : ORIGIN = 0x60000000, LENGTH = 2M
+  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 512K
 }
 
 SECTIONS
 {
-  . = 0x08000000;
+  . = 0x60000000;
   . = ALIGN(4);
+
+  PROVIDE(__ROM_START = .) ;
+
+  /* Image vector table and FlexSPI NOR configuration */
+  .bootRomCfg : ALIGN(4)
+  {
+    PROVIDE(__BOOT_ROM_CFG_BASE_ADDRESS = .) ;
+    *(.FlexSPI_NOR_Config)
+     KEEP(*(.FlexSPI_NOR_Config))
+    
+    *(.ImageVectorTable)
+    KEEP(*(.ImageVectorTable))
+  } > ROM
 
   /* ISR vectors */
   .isr_vector :
@@ -99,6 +112,8 @@ SECTIONS
     *(.ARM.attributes)
   } > ROM
 
+  PROVIDE(__ROM_END = .) ;
+
   . = 0x20000000;
   . = ALIGN(4);
 
@@ -132,4 +147,5 @@ SECTIONS
   PROVIDE(_fini = .);
 
   _rom_data_begin = LOADADDR(.data);
+  __IMAGE_SIZE = __ROM_END - __ROM_START;
 }

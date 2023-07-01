@@ -31,5 +31,8 @@
     <ClCompile Include="..\..\Src\startup\mcal_gcc_cxx_completion.cpp">
       <Filter>Src\startup</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Src\Appli\bootdata.c">
+      <Filter>Src\Appli</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
