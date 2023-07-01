@@ -1,0 +1,27 @@
+﻿name: teensy-4_nxp_iMXRT1062
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+jobs:
+  msvc-msbuild:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ Debug, Release ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
+      - name: msvc-msbuild-${{ matrix.suite }}
+        shell: cmd
+        run: |
+          MSBuild -m teensy-4_nxp_iMXRT1062.sln -p:useenv=false -p:Configuration=${{ matrix.suite }} -p:Platform=x64 /t:Rebuild
+          ..\Bin\${{ matrix.suite }}_x64\teensy-4_nxp_iMXRT1062.exe
+        working-directory: ./Build/VS
