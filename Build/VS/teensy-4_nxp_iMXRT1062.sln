@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{AEAA226C-F166-430D-A04A-4EA164AA02DD}"
 	ProjectSection(SolutionItems) = preProject
 		..\build.bat = ..\build.bat
+		..\build.sh = ..\build.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Make", "Make", "{0190D334-0639-463F-834C-470510AC80A0}"

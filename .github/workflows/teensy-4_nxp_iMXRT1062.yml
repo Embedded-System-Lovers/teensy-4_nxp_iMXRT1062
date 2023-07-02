@@ -42,6 +42,6 @@ jobs:
         run: sudo apt install gcc-arm-none-eabi
       - name: target-ubuntu-${{ matrix.suite }}
         run: |
-          make -f ../Make/make_000.gmk TYP_OS=unix ${{ matrix.suite }}
+          ../build.sh ${{ matrix.suite }}
           ls -la ../Bin/target_x64/target.elf ../Bin/target_x64/target.hex
         working-directory: ./Build/VS
