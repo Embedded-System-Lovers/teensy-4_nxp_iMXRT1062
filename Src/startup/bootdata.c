@@ -24,9 +24,8 @@
 // Externs
 //=========================================================================================
 extern unsigned int __BOOT_ROM_CFG_BASE_ADDRESS;
-extern unsigned int __initial_stack_pointer;
+extern unsigned int __IVT_BASE_ADDRESS;
 extern unsigned int __IMAGE_SIZE;
-extern void __my_startup(void);
 
 //=========================================================================================
 // Types
@@ -53,14 +52,6 @@ typedef struct
 }
 tBootData;
 
-
-typedef struct
-{
-  unsigned int stack;          /* Application stack pointer */
-  unsigned int reset_handler;  /* Application reset handler */
-}
-tBootVectorTable;
-
 //=========================================================================================
 // Globals
 //=========================================================================================
@@ -71,16 +62,10 @@ const tBootData BootData =
   .plugin = 0
 };
 
-const tBootVectorTable BootVectorTable =
-{
-  .stack         = (unsigned int) &__initial_stack_pointer,
-  .reset_handler = (unsigned int) &__my_startup
-};
-
 const tImageVectorTable ImageVectorTable __attribute__((section(".ImageVectorTable"), aligned(4096))) =
 {
   .header    = ImageVectorTableHeaderMagicNumber,
-  .entry     = (unsigned int) &BootVectorTable,
+  .entry     = (unsigned int) &__IVT_BASE_ADDRESS,
   .reserved1 = 0,
   .dcd       = 0,
   .boot_data = (unsigned int) &BootData,
