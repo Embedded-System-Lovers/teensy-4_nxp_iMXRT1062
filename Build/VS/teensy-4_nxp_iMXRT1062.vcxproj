@@ -72,11 +72,11 @@
     <IncludePath>$(IncludePath);$(SolutionDir)..\..\Src;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target|x64'">
-    <NMakeBuildCommandLine>..\build.bat</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>..\build.bat build</NMakeBuildCommandLine>
     <NMakeOutput>target.elf</NMakeOutput>
-    <NMakeCleanCommandLine>dir</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>..\build.bat</NMakeReBuildCommandLine>
-    <NMakePreprocessorDefinitions>__GNUC__=12</NMakePreprocessorDefinitions>
+    <NMakeCleanCommandLine>..\build.bat clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>..\build.bat all</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__=12;__attribute__()=</NMakePreprocessorDefinitions>
     <OutDir>$(SolutionDir)..\Bin\$(Configuration)_$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)..\Tmp\$(Configuration)_$(Platform)\</IntDir>
     <NMakeIncludeSearchPath>$(SolutionDir)../../Src</NMakeIncludeSearchPath>
@@ -93,14 +93,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target|x64'">
     <BuildLog>
-      <Path>$(OutDir)$(Configuration)_$(Platform)_BuildLog.htm</Path>
+      <Path>$(SolutionDir)..\Tmp\log\$(Configuration)_$(Platform)\_BuildLog.htm</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Src\Appli\Appli.c" />
     <ClCompile Include="..\..\Src\Appli\bootdata.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='target|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Src\MCAL\host\led.cpp">

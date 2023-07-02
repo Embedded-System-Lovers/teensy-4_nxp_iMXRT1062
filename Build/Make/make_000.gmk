@@ -1,14 +1,16 @@
 
-PATH_TOOLS = $(CURDIR)/../tools
-
-PATH_TOOLS_UTIL = $(PATH_TOOLS)/util
-PATH_TOOLS_GCC  = $(PATH_TOOLS)/gcc/gcc-11.2.0-arm-none-eabi/bin
-
 PATH_ENV        = $(CURDIR)/../Make
 PATH_SRC        = $(CURDIR)/../../Src
 PATH_TMP        = $(CURDIR)/../Tmp
 PATH_OBJ        = $(PATH_TMP)/Obj
 PATH_BIN        = $(CURDIR)/../Bin/target_x64
+
+ifeq ($(TYP_OS),win)
+
+PATH_TOOLS = $(CURDIR)/../tools
+
+PATH_TOOLS_UTIL = $(PATH_TOOLS)/util
+PATH_TOOLS_GCC  = $(PATH_TOOLS)/gcc/gcc-11.2.0-arm-none-eabi/bin
 
 CC              = $(PATH_TOOLS_GCC)/arm-none-eabi-g++.exe
 OBJCOPY         = $(PATH_TOOLS_GCC)/arm-none-eabi-objcopy.exe
@@ -16,22 +18,41 @@ OBJDUMP         = $(PATH_TOOLS_GCC)/arm-none-eabi-objdump.exe
 READELF         = $(PATH_TOOLS_GCC)/arm-none-eabi-readelf.exe
 
 MAKE            = $(PATH_TOOLS_UTIL)/make/make.exe
+ECHO            = $(PATH_TOOLS_UTIL)/bin/echo.exe
+RM              = $(PATH_TOOLS_UTIL)/bin/rm.exe
+MKDIR           = $(PATH_TOOLS_UTIL)/bin/mkdir.exe
+
+endif
+
+ifeq ($(TYP_OS),unix)
+
+CC              = arm-none-eabi-g++
+OBJCOPY         = arm-none-eabi-objcopy
+OBJDUMP         = arm-none-eabi-objdump
+READELF         = arm-none-eabi-readelf
+
+MAKE            = make
+ECHO            = echo
+RM              = rm
+MKDIR           = mkdir
+
+endif
 
 CFLAGS         = -Wall                                                            \
                  -Wextra                                                          \
                  -Wpedantic                                                       \
-                -O2                                                               \
-                -mcpu=cortex-m7                                                   \
-                -mtune=cortex-m7                                                  \
-                -mthumb                                                           \
-                -mfloat-abi=hard                                                  \
-                -march=armv7e-m+fpv5-d16                                          \
-                -ffast-math                                                       \
-                -finline-functions                                                \
-                -finline-limit=32                                                 \
-                -mno-unaligned-access                                             \
-                -mno-long-calls                                                   \
-                -I$(PATH_SRC)
+                 -O2                                                              \
+                 -mcpu=cortex-m7                                                  \
+                 -mtune=cortex-m7                                                 \
+                 -mthumb                                                          \
+                 -mfloat-abi=hard                                                 \
+                 -march=armv7e-m+fpv5-d16                                         \
+                 -ffast-math                                                      \
+                 -finline-functions                                               \
+                 -finline-limit=32                                                \
+                 -mno-unaligned-access                                            \
+                 -mno-long-calls                                                  \
+                 -I$(PATH_SRC)
 
 CPPFLAGS       = $(CFLAGS)                                                        \
                  -fno-rtti                                                        \
@@ -64,36 +85,60 @@ VPATH := $(subst \,/,$(sort $(dir $(SRC_FILES)) $(PATH_OBJ)))
 
 FILES_O := $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(SRC_FILES))))
 
-
 ifeq ($(MAKECMDGOALS),build)
 -include $(subst .o,.d,$(FILES_O))
 endif
 
-all : clean version $(PATH_BIN)/target.elf
+all : clean_all version $(PATH_BIN)/target.elf
 
+build : clean_prj version $(PATH_BIN)/target.elf
 
-.PHONY : clean
-clean :
-	if not exist $(subst /,\,$(PATH_OBJ)) mkdir $(subst /,\,$(PATH_OBJ))
-	if not exist $(subst /,\,$(PATH_BIN)) mkdir $(subst /,\,$(PATH_BIN))
-	del /Q $(subst /,\,$(PATH_BIN)/target.*)
-	del /Q $(subst /,\,$(PATH_OBJ)/*.*)
+clean : clean_all
+
+.PHONY : clean_all
+clean_all :
+	@-$(ECHO) +++ cleaning all
+	@-$(MKDIR) -p $(PATH_BIN)
+	@-$(MKDIR) -p $(PATH_OBJ)
+	@-$(RM) -r $(PATH_BIN) 2>NUL
+	@-$(RM) -r $(PATH_OBJ) 2>NUL
+	@-$(MKDIR) -p $(PATH_BIN)
+	@-$(MKDIR) -p $(PATH_OBJ)
+	@-$(ECHO)
+
+.PHONY : clean_prj
+clean_prj :
+	@-$(ECHO) +++ cleaning project
+	@-$(MKDIR) -p $(PATH_BIN)
+	@-$(RM) -r $(PATH_BIN) 2>NUL
+	@-$(MKDIR) -p $(PATH_BIN)
+	@-$(ECHO)
 
 .PHONY : version
 version :
-	$(MAKE) -v
-	$(CC) -v
+	@$(ECHO) +++ print GNUmake version
+	@$(MAKE) --version
+	@$(ECHO)
+	@$(ECHO) +++ print GCC version
+	@$(CC) -v
+	@$(ECHO)
 
 $(PATH_BIN)/target.elf : $(FILES_O)
-	$(CC) -x none $(LDFLAGS) $(FILES_O) -o $(PATH_BIN)/target.elf
-	$(OBJCOPY) $(PATH_BIN)/target.elf -O ihex $(PATH_BIN)/target.hex
-	$(OBJDUMP) $(PATH_BIN)/target.elf -d >> $(PATH_BIN)/target.list
-	$(READELF) $(PATH_BIN)/target.elf -a >> $(PATH_BIN)/target.readelf
+	@-$(ECHO)
+	@-$(ECHO) +++ linking application to absolute object file $(PATH_BIN)/target.elf
+	@-$(CC) -x none $(LDFLAGS) $(FILES_O) -o $(PATH_BIN)/target.elf
+	@-$(ECHO)
+	@-$(ECHO) +++ create HEX-file $(PATH_BIN)/target.hex
+	@-$(OBJCOPY) $(PATH_BIN)/target.elf -O ihex $(PATH_BIN)/target.hex
+	@-$(ECHO) +++ create list file $(PATH_BIN)/target.list
+	@-$(OBJDUMP) $(PATH_BIN)/target.elf -d > $(PATH_BIN)/target.list
+	@-$(ECHO) +++ create symbols with readelf in $(PATH_BIN)/target.readelf
+	@-$(READELF) $(PATH_BIN)/target.elf -a > $(PATH_BIN)/target.readelf
 
 $(PATH_OBJ)/%.o : %.c
-	@-echo +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
+	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
 	@-$(CC) -x c -std=c11 $(CFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
 
 $(PATH_OBJ)/%.o : %.cpp
-	@-echo +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
+	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
 	@$(CC) -x c++ -std=c++17 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err

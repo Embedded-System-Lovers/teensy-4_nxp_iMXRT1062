@@ -25,3 +25,23 @@ jobs:
           MSBuild -m teensy-4_nxp_iMXRT1062.sln -p:useenv=false -p:Configuration=${{ matrix.suite }} -p:Platform=x64 /t:Rebuild
           dir ..\Bin\${{ matrix.suite }}_x64\teensy-4_nxp_iMXRT1062.exe
         working-directory: .\Build\VS
+  target-ubuntu:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ all ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: target-ubuntu-${{ matrix.suite }}
+        run: |
+          make -f ../Make/make_000.gmk TYP_OS=unix ${{ matrix.suite }}
+          ls -la ../Bin/target_x64/target.elf ../Bin/target_x64/target.hex
+        working-directory: ./Build/VS
