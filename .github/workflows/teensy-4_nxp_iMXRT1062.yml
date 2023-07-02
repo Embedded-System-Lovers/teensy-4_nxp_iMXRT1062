@@ -26,7 +26,7 @@ jobs:
           dir ..\Bin\${{ matrix.suite }}_x64\teensy-4_nxp_iMXRT1062.exe
         working-directory: .\Build\VS
   target-windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     strategy:
       fail-fast: false
       matrix:
@@ -38,7 +38,9 @@ jobs:
       - name: unpack-toolchain
         shell: cmd
         run: |
-         start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi"
+          dir ./gcc-11.2.0-arm-none-eabi.exe
+          echo unpacking ./gcc-11.2.0-arm-none-eabi.exe
+          start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi"
         working-directory: .\Build\tools\gcc
       - name: build-target
         shell: cmd
