@@ -5,6 +5,8 @@ PATH_TMP        = $(CURDIR)/../Tmp
 PATH_OBJ        = $(PATH_TMP)/Obj
 PATH_BIN        = $(CURDIR)/../Bin/target_x64
 
+MY_NUL         :=
+
 ifeq ($(TYP_OS),win)
 
 PATH_TOOLS = $(CURDIR)/../tools
@@ -22,6 +24,8 @@ ECHO            = $(PATH_TOOLS_UTIL)/bin/echo.exe
 RM              = $(PATH_TOOLS_UTIL)/bin/rm.exe
 MKDIR           = $(PATH_TOOLS_UTIL)/bin/mkdir.exe
 
+MY_NUL         := NUL
+
 endif
 
 ifeq ($(TYP_OS),unix)
@@ -35,6 +39,8 @@ MAKE            = make
 ECHO            = echo
 RM              = rm
 MKDIR           = mkdir
+
+MY_NUL         := /dev/null
 
 endif
 
@@ -100,8 +106,8 @@ clean_all :
 	@-$(ECHO) +++ cleaning all
 	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(MKDIR) -p $(PATH_OBJ)
-	@-$(RM) -r $(PATH_BIN) 2>NUL
-	@-$(RM) -r $(PATH_OBJ) 2>NUL
+	@-$(RM) -r $(PATH_BIN) 2>$(MY_NUL)
+	@-$(RM) -r $(PATH_OBJ) 2>$(MY_NUL)
 	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(ECHO)
@@ -110,7 +116,7 @@ clean_all :
 clean_prj :
 	@-$(ECHO) +++ cleaning project
 	@-$(MKDIR) -p $(PATH_BIN)
-	@-$(RM) -r $(PATH_BIN) 2>NUL
+	@-$(RM) -r $(PATH_BIN) 2>$(MY_NUL)
 	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(ECHO)
 
