@@ -74,7 +74,7 @@
   #define pSTK_VAL    ((volatile stStkVal* const)  (SYS_TICK_BASE_REG + 0x08))
   #define pSTK_CALIB  ((volatile stStkCalib* const)(SYS_TICK_BASE_REG + 0x0C))
   
-  #define CPU_FREQ_MHZ         396U
+  #define CPU_FREQ_MHZ         600U
   #define OS_SYS_TICK_MS(x)    ((unsigned long)(CPU_FREQ_MHZ * x * 1000UL) - 1UL)
   #define OS_SYS_TICK_US(x)    ((unsigned long)(CPU_FREQ_MHZ * x) - 1UL)
   
