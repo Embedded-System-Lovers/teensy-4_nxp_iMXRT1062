@@ -1,3 +1,13 @@
+###############################################################################
+#  Copyright Christopher Kormanyos 1995 - 2023.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+###############################################################################
+# Paths and tools
+###############################################################################
 
 PATH_ENV        = $(CURDIR)/../Make
 PATH_SRC        = $(CURDIR)/../../Src
@@ -44,6 +54,10 @@ MY_NUL         := /dev/null
 
 endif
 
+###############################################################################
+# Toolchain flags
+###############################################################################
+
 CFLAGS         = -Wall                                                            \
                  -Wextra                                                          \
                  -Wpedantic                                                       \
@@ -80,6 +94,7 @@ SRC_FILES      = $(PATH_SRC)/Appli/Appli                                        
                  $(PATH_SRC)/MCAL/target/led                                      \
                  $(PATH_SRC)/MCAL/target/mcal_gpt                                 \
                  $(PATH_SRC)/MCAL/target/mcal_irq                                 \
+                 $(PATH_SRC)/MCAL/target/mcal_osc                                 \
                  $(PATH_SRC)/startup/bootdata                                     \
                  $(PATH_SRC)/startup/crt0                                         \
                  $(PATH_SRC)/startup/crt1                                         \
@@ -87,15 +102,21 @@ SRC_FILES      = $(PATH_SRC)/Appli/Appli                                        
                  $(PATH_SRC)/startup/int_vect                                     \
                  $(PATH_SRC)/startup/mcal_gcc_cxx_completion
 
+###############################################################################
+# Dependencies and targets
+###############################################################################
 
 VPATH := $(subst \,/,$(sort $(dir $(SRC_FILES)) $(PATH_OBJ)))
-
 
 FILES_O := $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(SRC_FILES))))
 
 ifeq ($(MAKECMDGOALS),build)
 -include $(subst .o,.d,$(FILES_O))
 endif
+
+###############################################################################
+# Build targets
+###############################################################################
 
 all : clean_all version $(PATH_BIN)/target.elf
 
@@ -142,6 +163,10 @@ $(PATH_BIN)/target.elf : $(FILES_O)
 	@-$(OBJDUMP) $(PATH_BIN)/target.elf -d > $(PATH_BIN)/target.list
 	@-$(ECHO) +++ create symbols with readelf in $(PATH_BIN)/target.readelf
 	@-$(READELF) $(PATH_BIN)/target.elf -a > $(PATH_BIN)/target.readelf
+
+###############################################################################
+# Pattern rules
+###############################################################################
 
 $(PATH_OBJ)/%.o : %.c
 	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
