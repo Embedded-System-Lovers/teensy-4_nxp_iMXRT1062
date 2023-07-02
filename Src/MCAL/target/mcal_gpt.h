@@ -23,7 +23,7 @@
   {
     namespace gpt
     {
-      using arm_sys_tick_type = arm_sys_tick<static_cast<std::uint32_t>(UINT16_C(396))>;
+      using arm_sys_tick_type = arm_sys_tick<static_cast<std::uint32_t>(UINT16_C(600))>;
 
       using config_type = void;
       using value_type  = typename arm_sys_tick_type::value_type;
