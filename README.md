@@ -36,7 +36,7 @@ Following the bootloader's low-level chip initialization,
 the program jumps to our own self-written startup stub
 called `__my_startup()` in [crt0.cpp](./Src/startup/crt0.cpp).
 
-After a few mor initializations in `__my_startup()`, control is
+After a few more initializations in `__my_startup()`, control is
 transfered to the `main()` subroutine. Here the timer interrupt is setup
 for LED blinky.
 
@@ -48,8 +48,8 @@ interrupt handler.
 ## Building the Application
 
 The _home_ directory of the build system (whether on `Win*` of `*nix*`)
-is located in the directory `teensy-4_nxp_iMXRT1062/Build/VS`.
-Severa paths used in the build system(s) are defined relative to this
+is located in the directory [`Build/VS`](./Build/VS).
+Several paths used in the build(s) are defined relative to this
 home directory.
 
 ### Build on `*nix*`
@@ -58,7 +58,7 @@ Build on `*nix*` is easy using an installed `gcc-arm-none-eabi`
 
 ```sh
 cd teensy-4_nxp_iMXRT1062/Build/VS
-bash ../build.sh all
+../build.sh all
 ```
 
 If `gcc-arm-none-eabi` is not present, then it can be installed (if needed).
@@ -74,9 +74,10 @@ first unpack the gcc-arm-none-eabi toolchain. This is done by
 going to `Build/tools/gcc` in Windows-Explorer
 and simply double-clicking on the self-extracting archive
 file `gcc-11.2.0-arm-none-eabi.exe`. Answer yes to
-the query in the pop-up window launched from the etractor.
+the query in the pop-up window launched from the extractor.
 
 We will now build the `target` configuration in MSVC.
+(This is the configuration that runs on the Teensy board.)
 
 Navigate to the directory [`Build/VS`](./Build/VS).
 Find there the MSVC solution file `teensy-4_nxp_iMXRT1062.sln`
