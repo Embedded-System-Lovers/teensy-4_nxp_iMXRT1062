@@ -44,7 +44,7 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector __attribu
 
 // See pages 238-242 in the microcontroller manual.
 extern "C"
-const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
+const volatile std::array<isr_type, number_of_interrupts> __attribute__((aligned(512))) __isr_vector =
 {{
   __initial_stack_pointer,   // 0x0000, initial stack pointer
   __my_startup,              // 0x0004, reset
@@ -61,7 +61,7 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __debug_mon_handler,       // 0x0030, debug monitor
   __vector_unused_irq,       // 0x0034, reserved
   __pend_sv_handler,         // 0x0038, pending svc
-  __vector_unused_irq,       // 0x003C, system tick handler
+  __sys_tick_handler,        // 0x003C, system tick handler
   __vector_unused_irq,       // 0x0040, window watchdog
   __vector_unused_irq,       // 0x0044, pvd through exti line detection
   __vector_unused_irq,       // 0x0048, tamp_stamp on exti line

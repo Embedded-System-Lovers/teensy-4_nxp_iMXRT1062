@@ -39,12 +39,12 @@ SECTIONS
   . = 0x60000000;
   . = ALIGN(4);
 
-  PROVIDE(__ROM_START = .) ;
+  PROVIDE(__ROM_START = .);
 
   /* Image vector table and FlexSPI NOR configuration */
   .bootRomCfg : ALIGN(4)
   {
-    PROVIDE(__BOOT_ROM_CFG_BASE_ADDRESS = .) ;
+    PROVIDE(__BOOT_ROM_CFG_BASE_ADDRESS = .);
     *(.FlexSPI_NOR_Config)
      KEEP(*(.FlexSPI_NOR_Config))
     
@@ -55,6 +55,7 @@ SECTIONS
   /* ISR vectors */
   .isr_vector :
   {
+    PROVIDE(__IVT_BASE_ADDRESS = .);
     *(.isr_vector)
     . = ALIGN(0x10);
     KEEP(*(.isr_vector))

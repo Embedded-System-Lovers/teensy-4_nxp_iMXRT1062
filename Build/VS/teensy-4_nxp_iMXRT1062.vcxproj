@@ -59,7 +59,7 @@
     <NMakePreprocessorDefinitions>_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <OutDir>$(SolutionDir)..\Bin\$(Configuration)_$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)..\Tmp\$(Configuration)_$(Platform)\</IntDir>
-    <IncludePath>$(IncludePath);$(SolutionDir)..\..\Src;</IncludePath>
+    <IncludePath>$(IncludePath);$(SolutionDir)..\..\Src;$(IncludePath);$(SolutionDir)..\..\Src\MCAL\host;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <NMakeBuildCommandLine>dir</NMakeBuildCommandLine>
@@ -69,7 +69,7 @@
     <NMakePreprocessorDefinitions>NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <OutDir>$(SolutionDir)..\Bin\$(Configuration)_$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)..\Tmp\$(Configuration)_$(Platform)\</IntDir>
-    <IncludePath>$(IncludePath);$(SolutionDir)..\..\Src;</IncludePath>
+    <IncludePath>$(IncludePath);$(SolutionDir)..\..\Src;$(IncludePath);$(SolutionDir)..\..\Src\MCAL\host;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target|x64'">
     <NMakeBuildCommandLine>..\build.bat build</NMakeBuildCommandLine>
@@ -79,7 +79,7 @@
     <NMakePreprocessorDefinitions>__GNUC__=12;__attribute__()=</NMakePreprocessorDefinitions>
     <OutDir>$(SolutionDir)..\Bin\$(Configuration)_$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)..\Tmp\$(Configuration)_$(Platform)\</IntDir>
-    <NMakeIncludeSearchPath>$(SolutionDir)../../Src</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>$(SolutionDir)../../Src;$(SolutionDir)../../Src/MCAL/target;</NMakeIncludeSearchPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <BuildLog>
@@ -97,20 +97,20 @@
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Src\Appli\Appli.c" />
+    <ClCompile Include="..\..\Src\Appli\Appli.cpp" />
     <ClCompile Include="..\..\Src\MCAL\host\led.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='target|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\Src\MCAL\host\timer.cpp">
+    <ClCompile Include="..\..\Src\MCAL\host\mcal_gpt.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='target|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Src\MCAL\target\led.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\Src\MCAL\target\timer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    <ClCompile Include="..\..\Src\MCAL\target\mcal_gpt.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Src\startup\bootdata.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -138,8 +138,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Src\MCAL\host\mcal_gpt.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='target|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\Src\MCAL\led.h" />
+    <ClInclude Include="..\..\Src\MCAL\mcal_gpt_arm_sys_tick.h" />
+    <ClInclude Include="..\..\Src\MCAL\target\mcal_gpt.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\Src\MCAL\timer.h" />
+    <ClInclude Include="..\..\Src\util\utility\util_noexcept.h" />
+    <ClInclude Include="..\..\Src\util\utility\util_time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

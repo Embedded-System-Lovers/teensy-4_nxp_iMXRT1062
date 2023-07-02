@@ -20,9 +20,15 @@
     <Filter Include="Src\MCAL\host">
       <UniqueIdentifier>{248d60e5-258b-4379-bf40-f1d90eed4d90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\util">
+      <UniqueIdentifier>{d1ae7dff-73c3-4969-a95c-67b9401f6826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\util\utility">
+      <UniqueIdentifier>{c9db83d8-2180-421e-a636-c4dbc85328ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Src\Appli\Appli.c">
+    <ClCompile Include="..\..\Src\Appli\Appli.cpp">
       <Filter>Src\Appli</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Src\startup\int_vect.cpp">
@@ -46,14 +52,14 @@
     <ClCompile Include="..\..\Src\MCAL\target\led.cpp">
       <Filter>Src\MCAL\target</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Src\MCAL\target\timer.cpp">
-      <Filter>Src\MCAL\target</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Src\MCAL\host\timer.cpp">
-      <Filter>Src\MCAL\host</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Src\startup\bootdata.c">
       <Filter>Src\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\target\mcal_gpt.cpp">
+      <Filter>Src\MCAL\target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\host\mcal_gpt.cpp">
+      <Filter>Src\MCAL\host</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +68,21 @@
     </ClInclude>
     <ClInclude Include="..\..\Src\MCAL\timer.h">
       <Filter>Src\MCAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\mcal_gpt_arm_sys_tick.h">
+      <Filter>Src\MCAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\target\mcal_gpt.h">
+      <Filter>Src\MCAL\target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\util\utility\util_time.h">
+      <Filter>Src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\host\mcal_gpt.h">
+      <Filter>Src\MCAL\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\util\utility\util_noexcept.h">
+      <Filter>Src\util\utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
