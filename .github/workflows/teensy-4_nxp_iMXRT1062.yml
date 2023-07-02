@@ -25,3 +25,24 @@ jobs:
           MSBuild -m teensy-4_nxp_iMXRT1062.sln -p:useenv=false -p:Configuration=${{ matrix.suite }} -p:Platform=x64 /t:Rebuild
           dir ..\Bin\${{ matrix.suite }}_x64\teensy-4_nxp_iMXRT1062.exe
         working-directory: .\Build\VS
+  target-windows:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ all ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: unpack-toolchain
+        shell: cmd
+        run: |
+         start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi"
+        working-directory: .\Build\tools\gcc
+      - name: build-target
+        shell: cmd
+        run: |
+          ..\build.bat ${{ matrix.suite }}
+          dir ..\Bin\target_x64\target.hex
+        working-directory: .\Build\VS

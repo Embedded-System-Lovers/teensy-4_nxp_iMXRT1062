@@ -16,6 +16,7 @@ OBJDUMP         = $(PATH_TOOLS_GCC)/arm-none-eabi-objdump.exe
 READELF         = $(PATH_TOOLS_GCC)/arm-none-eabi-readelf.exe
 
 MAKE            = $(PATH_TOOLS_UTIL)/make/make.exe
+ECHO            = $(PATH_TOOLS_UTIL)/bin/echo.exe
 
 CFLAGS         = -Wall                                                            \
                  -Wextra                                                          \
@@ -69,31 +70,52 @@ ifeq ($(MAKECMDGOALS),build)
 -include $(subst .o,.d,$(FILES_O))
 endif
 
-all : clean version $(PATH_BIN)/target.elf
+all : clean_all version $(PATH_BIN)/target.elf
 
+build : clean_bin version $(PATH_BIN)/target.elf
 
-.PHONY : clean
-clean :
-	if not exist $(subst /,\,$(PATH_OBJ)) mkdir $(subst /,\,$(PATH_OBJ))
-	if not exist $(subst /,\,$(PATH_BIN)) mkdir $(subst /,\,$(PATH_BIN))
-	del /Q $(subst /,\,$(PATH_BIN)/target.*)
-	del /Q $(subst /,\,$(PATH_OBJ)/*.*)
+clean : clean_all
+
+.PHONY : clean_all
+clean_all :
+	@-$(ECHO) +++ cleaning all (bin and temporaries)
+	@-if not exist $(subst /,\,$(PATH_OBJ)) mkdir $(subst /,\,$(PATH_OBJ))
+	@-if not exist $(subst /,\,$(PATH_BIN)) mkdir $(subst /,\,$(PATH_BIN))
+	@-del /Q $(subst /,\,$(PATH_BIN)/target.*)
+	@-del /Q $(subst /,\,$(PATH_OBJ)/*.*)
+	@-$(ECHO)
+
+.PHONY : clean_bin
+clean_bin :
+	@-$(ECHO) +++ cleaning project (bin)
+	@-del /Q $(subst /,\,$(PATH_BIN)/target.*)
+	@-$(ECHO)
 
 .PHONY : version
 version :
-	$(MAKE) -v
-	$(CC) -v
+	@-$(ECHO) +++ print GNUmake version
+	@-$(MAKE) -v
+	@-$(ECHO)
+	@-$(ECHO) +++ print compiler version
+	@-$(CC) -v
+	@-$(ECHO)
 
 $(PATH_BIN)/target.elf : $(FILES_O)
-	$(CC) -x none $(LDFLAGS) $(FILES_O) -o $(PATH_BIN)/target.elf
-	$(OBJCOPY) $(PATH_BIN)/target.elf -O ihex $(PATH_BIN)/target.hex
-	$(OBJDUMP) $(PATH_BIN)/target.elf -d >> $(PATH_BIN)/target.list
-	$(READELF) $(PATH_BIN)/target.elf -a >> $(PATH_BIN)/target.readelf
+	@-$(ECHO)
+	@-$(ECHO) +++ linking application to absolute object file $(PATH_BIN)/target.elf
+	@-$(CC) -x none $(LDFLAGS) $(FILES_O) -o $(PATH_BIN)/target.elf
+	@-$(ECHO)
+	@-$(ECHO) +++ create HEX-file $(PATH_BIN)/target.hex
+	@-$(OBJCOPY) $(PATH_BIN)/target.elf -O ihex $(PATH_BIN)/target.hex
+	@-$(ECHO) +++ create list file $(PATH_BIN)/target.list
+	@-$(OBJDUMP) $(PATH_BIN)/target.elf -d > $(PATH_BIN)/target.list
+	@-$(ECHO) +++ create symbols with readelf in $(PATH_BIN)/target.readelf
+	@-$(READELF) $(PATH_BIN)/target.elf -a > $(PATH_BIN)/target.readelf
 
 $(PATH_OBJ)/%.o : %.c
-	@-echo +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
+	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
 	@-$(CC) -x c -std=c11 $(CFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
 
 $(PATH_OBJ)/%.o : %.cpp
-	@-echo +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
+	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
 	@$(CC) -x c++ -std=c++17 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
