@@ -100,3 +100,7 @@ CI runs on pushes and pull-requests with simple
 build(s) including result verification on both
 `windows-latest` as well as `ubuntu-latest`
 using GitHub Actions.
+
+## Licensing
+
+This project is licensed under [BSL 1.0](./LICENSE_1_0.txt).
