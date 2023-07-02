@@ -76,9 +76,9 @@ LDFLAGS        = $(CPPFLAGS)                                                    
                  -Wl,-Map,$(PATH_BIN)/target.map
 
 SRC_FILES      = $(PATH_SRC)/Appli/Appli                                          \
-                 $(PATH_SRC)/Appli/bootdata                                       \
                  $(PATH_SRC)/MCAL/target/led                                      \
                  $(PATH_SRC)/MCAL/target/timer                                    \
+                 $(PATH_SRC)/startup/bootdata                                     \
                  $(PATH_SRC)/startup/crt0                                         \
                  $(PATH_SRC)/startup/crt1                                         \
                  $(PATH_SRC)/startup/crt0_init_ram                                \
