@@ -10,13 +10,9 @@ teensy-4_nxp_iMXRT1062
         <img src="https://img.shields.io/github/languages/code-size/Embedded-System-Lovers/teensy-4_nxp_iMXRT1062" /></a>
 </p>
 
-Bare metal programming on Teensy 4.0 ARM Cortex-M7 NXP iMXRT1062 board
-
-
-
 This repository implements an entirely manually-written, pure
 _bare_ _metal_ Blinky Project for the NXP ARM Cortex-M7 iMXRT1062
-(on the Teens 4.0 board).
+(on the Teensy 4.0 board).
 
 Features include:
   - boot through the board's standard bootloader,
@@ -51,7 +47,7 @@ interrupt handler.
 
 ## Building the Application
 
-The _home_ directory of the build system (whether on `win` of `*nix`)
+The _home_ directory of the build system (whether on `Win*` of `*nix*`)
 is located in the directory `teensy-4_nxp_iMXRT1062/Build/VS`.
 Severa paths used in the build system(s) are defined relative to this
 home directory.
@@ -71,14 +67,16 @@ If `gcc-arm-none-eabi` is not present, then it can be installed (if needed).
 sudo apt install gcc-arm-none-eabi
 ```
 
-### Build on `Win` in MSVC
+### Build on `Win*` in MSVC
 
-** Important ** When building with MSVC, first unpack
-the gcc-arm-none-eabi toolchain. This is done by
+**Important:** When building with MSVC, it is necessary to
+first unpack the gcc-arm-none-eabi toolchain. This is done by
 going to `Build/tools/gcc` in Windows-Explorer
 and simply double-clicking on the self-extracting archive
 file `gcc-11.2.0-arm-none-eabi.exe`. Answer yes to
 the query in the pop-up window launched from the etractor.
+
+We will now build the `target` configuration in MSVC.
 
 Navigate to the directory [`Build/VS`](./Build/VS).
 Find there the MSVC solution file `teensy-4_nxp_iMXRT1062.sln`
@@ -89,6 +87,8 @@ The build results including ELF-file, HEX-mask, symbol-file
 and assembly list file are created in the output directory
 `Build\Bin\target_x64`.
 
+There are additional _host_ configurations available.
+
 Simulated Windows (host) project configurations
 `Debug` and `Release` can be used for trouble-shooting the code if
 needed. These run on the host system with simulated LED blinky show.
@@ -96,5 +96,6 @@ needed. These run on the host system with simulated LED blinky show.
 ## Continuous Integration
 
 CI runs on pushes and pull-requests with simple
-build(s) including result verification on `ubuntu-latest`
+build(s) including result verification on both
+`windows-latest` as well as `ubuntu-latest`
 using GitHub Actions.
