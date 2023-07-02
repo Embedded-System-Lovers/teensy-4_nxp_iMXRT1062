@@ -112,6 +112,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\target\mcal_irq.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\Src\startup\bootdata.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -141,9 +145,16 @@
     <ClInclude Include="..\..\Src\MCAL\host\mcal_gpt.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='target|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\host\mcal_irq.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='target|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\Src\MCAL\led.h" />
     <ClInclude Include="..\..\Src\MCAL\mcal_gpt_arm_sys_tick.h" />
     <ClInclude Include="..\..\Src\MCAL\target\mcal_gpt.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\target\mcal_irq.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
