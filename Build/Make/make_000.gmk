@@ -80,6 +80,7 @@ SRC_FILES      = $(PATH_SRC)/Appli/Appli                                        
                  $(PATH_SRC)/MCAL/target/led                                      \
                  $(PATH_SRC)/MCAL/target/mcal_gpt                                 \
                  $(PATH_SRC)/MCAL/target/mcal_irq                                 \
+                 $(PATH_SRC)/MCAL/target/mcal_osc                                 \
                  $(PATH_SRC)/startup/bootdata                                     \
                  $(PATH_SRC)/startup/crt0                                         \
                  $(PATH_SRC)/startup/crt1                                         \
