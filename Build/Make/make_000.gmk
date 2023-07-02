@@ -1,14 +1,16 @@
 
-PATH_TOOLS = $(CURDIR)/../tools
-
-PATH_TOOLS_UTIL = $(PATH_TOOLS)/util
-PATH_TOOLS_GCC  = $(PATH_TOOLS)/gcc/gcc-11.2.0-arm-none-eabi/bin
-
 PATH_ENV        = $(CURDIR)/../Make
 PATH_SRC        = $(CURDIR)/../../Src
 PATH_TMP        = $(CURDIR)/../Tmp
 PATH_OBJ        = $(PATH_TMP)/Obj
 PATH_BIN        = $(CURDIR)/../Bin/target_x64
+
+ifeq ($(TYP_OS),win)
+
+PATH_TOOLS = $(CURDIR)/../tools
+
+PATH_TOOLS_UTIL = $(PATH_TOOLS)/util
+PATH_TOOLS_GCC  = $(PATH_TOOLS)/gcc/gcc-11.2.0-arm-none-eabi/bin
 
 CC              = $(PATH_TOOLS_GCC)/arm-none-eabi-g++.exe
 OBJCOPY         = $(PATH_TOOLS_GCC)/arm-none-eabi-objcopy.exe
@@ -17,22 +19,40 @@ READELF         = $(PATH_TOOLS_GCC)/arm-none-eabi-readelf.exe
 
 MAKE            = $(PATH_TOOLS_UTIL)/make/make.exe
 ECHO            = $(PATH_TOOLS_UTIL)/bin/echo.exe
+RM              = $(PATH_TOOLS_UTIL)/bin/rm.exe
+MKDIR           = $(PATH_TOOLS_UTIL)/bin/mkdir.exe
+
+endif
+
+ifeq ($(TYP_OS),unix)
+
+CC              = arm-none-eabi-g++
+OBJCOPY         = arm-none-eabi-objcopy
+OBJDUMP         = arm-none-eabi-objdump
+READELF         = arm-none-eabi-readelf
+
+MAKE            = make
+ECHO            = echo
+RM              = rm
+MKDIR           = mkdir
+
+endif
 
 CFLAGS         = -Wall                                                            \
                  -Wextra                                                          \
                  -Wpedantic                                                       \
-                -O2                                                               \
-                -mcpu=cortex-m7                                                   \
-                -mtune=cortex-m7                                                  \
-                -mthumb                                                           \
-                -mfloat-abi=hard                                                  \
-                -march=armv7e-m+fpv5-d16                                          \
-                -ffast-math                                                       \
-                -finline-functions                                                \
-                -finline-limit=32                                                 \
-                -mno-unaligned-access                                             \
-                -mno-long-calls                                                   \
-                -I$(PATH_SRC)
+                 -O2                                                              \
+                 -mcpu=cortex-m7                                                  \
+                 -mtune=cortex-m7                                                 \
+                 -mthumb                                                          \
+                 -mfloat-abi=hard                                                 \
+                 -march=armv7e-m+fpv5-d16                                         \
+                 -ffast-math                                                      \
+                 -finline-functions                                               \
+                 -finline-limit=32                                                \
+                 -mno-unaligned-access                                            \
+                 -mno-long-calls                                                  \
+                 -I$(PATH_SRC)
 
 CPPFLAGS       = $(CFLAGS)                                                        \
                  -fno-rtti                                                        \
@@ -65,40 +85,43 @@ VPATH := $(subst \,/,$(sort $(dir $(SRC_FILES)) $(PATH_OBJ)))
 
 FILES_O := $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(SRC_FILES))))
 
-
 ifeq ($(MAKECMDGOALS),build)
 -include $(subst .o,.d,$(FILES_O))
 endif
 
 all : clean_all version $(PATH_BIN)/target.elf
 
-build : clean_bin version $(PATH_BIN)/target.elf
+build : clean_prj version $(PATH_BIN)/target.elf
 
 clean : clean_all
 
 .PHONY : clean_all
 clean_all :
-	@-$(ECHO) +++ cleaning all (bin and temporaries)
-	@-if not exist $(subst /,\,$(PATH_OBJ)) mkdir $(subst /,\,$(PATH_OBJ))
-	@-if not exist $(subst /,\,$(PATH_BIN)) mkdir $(subst /,\,$(PATH_BIN))
-	@-del /Q $(subst /,\,$(PATH_BIN)/target.*)
-	@-del /Q $(subst /,\,$(PATH_OBJ)/*.*)
+	@-$(ECHO) +++ cleaning all
+	@-$(MKDIR) -p $(PATH_BIN)
+	@-$(MKDIR) -p $(PATH_OBJ)
+	@-$(RM) -r $(PATH_BIN) 2>NUL
+	@-$(RM) -r $(PATH_OBJ) 2>NUL
+	@-$(MKDIR) -p $(PATH_BIN)
+	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(ECHO)
 
-.PHONY : clean_bin
-clean_bin :
-	@-$(ECHO) +++ cleaning project (bin)
-	@-del /Q $(subst /,\,$(PATH_BIN)/target.*)
+.PHONY : clean_prj
+clean_prj :
+	@-$(ECHO) +++ cleaning project
+	@-$(MKDIR) -p $(PATH_BIN)
+	@-$(RM) -r $(PATH_BIN) 2>NUL
+	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(ECHO)
 
 .PHONY : version
 version :
-	@-$(ECHO) +++ print GNUmake version
-	@-$(MAKE) -v
-	@-$(ECHO)
-	@-$(ECHO) +++ print compiler version
-	@-$(CC) -v
-	@-$(ECHO)
+	@$(ECHO) +++ print GNUmake version
+	@$(MAKE) --version
+	@$(ECHO)
+	@$(ECHO) +++ print GCC version
+	@$(CC) -v
+	@$(ECHO)
 
 $(PATH_BIN)/target.elf : $(FILES_O)
 	@-$(ECHO)
