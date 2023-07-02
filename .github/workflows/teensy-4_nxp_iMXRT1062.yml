@@ -38,9 +38,9 @@ jobs:
       - name: unpack-toolchain
         shell: cmd
         run: |
-          dir ./gcc-11.2.0-arm-none-eabi.exe
-          echo unpacking ./gcc-11.2.0-arm-none-eabi.exe
-          start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi"
+          dir .\gcc-11.2.0-arm-none-eabi.exe
+          echo unpacking .\gcc-11.2.0-arm-none-eabi.exe
+          start /b /wait .\gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi"
         working-directory: .\Build\tools\gcc
       - name: build-target
         shell: cmd
