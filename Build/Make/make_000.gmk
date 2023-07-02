@@ -58,6 +58,7 @@ CFLAGS         = -Wall                                                          
                  -finline-limit=32                                                \
                  -mno-unaligned-access                                            \
                  -mno-long-calls                                                  \
+                 -I$(PATH_SRC)/MCAL/target                                        \
                  -I$(PATH_SRC)
 
 CPPFLAGS       = $(CFLAGS)                                                        \
@@ -77,7 +78,8 @@ LDFLAGS        = $(CPPFLAGS)                                                    
 
 SRC_FILES      = $(PATH_SRC)/Appli/Appli                                          \
                  $(PATH_SRC)/MCAL/target/led                                      \
-                 $(PATH_SRC)/MCAL/target/timer                                    \
+                 $(PATH_SRC)/MCAL/target/mcal_gpt                                 \
+                 $(PATH_SRC)/MCAL/target/mcal_irq                                 \
                  $(PATH_SRC)/startup/bootdata                                     \
                  $(PATH_SRC)/startup/crt0                                         \
                  $(PATH_SRC)/startup/crt1                                         \
