@@ -18,10 +18,10 @@ _bare_ _metal_ Blinky Project for the NXP ARM Cortex-M7 iMXRT1062
 
 Features include:
   - boot through the board's standard bootloader,
-  - timebase derived from `SysTick`,
   - PLL frequency increased to 600 MHz,
+  - timebase derived from `SysTick`,
   - blinky LED show with adjustable frequency,
-  - implementation in C++17/C11 with absolute minimal use of assembly.
+  - implementation in C++20/C11 (and beyond) with absolute minimal use of assembly.
 
 A clear and easy-to-understand build system based on GNUmake
 completes this fun and educational project.

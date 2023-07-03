@@ -204,5 +204,5 @@ $(PATH_OBJ)/%.o : %.c
 
 $(PATH_OBJ)/%.o : %.cpp
 	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
-	@$(CC) -x c++ -std=c++17 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
+	@-$(CC) -x c++ -std=c++20 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
