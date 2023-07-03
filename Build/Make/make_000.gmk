@@ -29,10 +29,11 @@ OBJCOPY         = $(PATH_TOOLS_GCC)/arm-none-eabi-objcopy.exe
 OBJDUMP         = $(PATH_TOOLS_GCC)/arm-none-eabi-objdump.exe
 READELF         = $(PATH_TOOLS_GCC)/arm-none-eabi-readelf.exe
 
-MAKE            = $(PATH_TOOLS_UTIL)/make/make.exe
 ECHO            = $(PATH_TOOLS_UTIL)/bin/echo.exe
-RM              = $(PATH_TOOLS_UTIL)/bin/rm.exe
+MAKE            = $(PATH_TOOLS_UTIL)/make/make.exe
 MKDIR           = $(PATH_TOOLS_UTIL)/bin/mkdir.exe
+RM              = $(PATH_TOOLS_UTIL)/bin/rm.exe
+SED             = $(PATH_TOOLS_UTIL)/bin/sed.exe
 
 MY_NUL         := NUL
 
@@ -58,27 +59,55 @@ endif
 # Toolchain flags
 ###############################################################################
 
-CFLAGS         = -Wall                                                            \
+WFLAGS         = -Wall                                                            \
                  -Wextra                                                          \
                  -Wpedantic                                                       \
-                 -O2                                                              \
+                 -Wmain                                                           \
+                 -Wundef                                                          \
+                 -Wconversion                                                     \
+                 -Wsign-conversion                                                \
+                 -Wunused-parameter                                               \
+                 -Wuninitialized                                                  \
+                 -Wmissing-declarations                                           \
+                 -Wshadow                                                         \
+                 -Wunreachable-code                                               \
+                 -Wswitch-default                                                 \
+                 -Wswitch-enum                                                    \
+                 -Wcast-align                                                     \
+                 -Wmissing-include-dirs                                           \
+                 -Winit-self                                                      \
+                 -Wfloat-equal                                                    \
+                 -Wdouble-promotion                                               \
+                 -Wno-comment
+
+CFLAGS         = -O2                                                              \
+                 $(WFLAGS)                                                        \
                  -mcpu=cortex-m7                                                  \
                  -mtune=cortex-m7                                                 \
                  -mthumb                                                          \
                  -mfloat-abi=hard                                                 \
                  -march=armv7e-m+fpv5-d16                                         \
+                 -mno-unaligned-access                                            \
+                 -mno-long-calls                                                  \
                  -ffast-math                                                      \
                  -finline-functions                                               \
                  -finline-limit=32                                                \
-                 -mno-unaligned-access                                            \
-                 -mno-long-calls                                                  \
+                 -gdwarf-2                                                        \
+                 -fno-exceptions                                                  \
+                 -ffunction-sections                                              \
+                 -fdata-sections                                                  \
+                 -MMD -MF $(PATH_OBJ)/$(basename $(@F)).d                         \
                  -I$(PATH_SRC)/MCAL/target                                        \
                  -I$(PATH_SRC)
 
 CPPFLAGS       = $(CFLAGS)                                                        \
                  -fno-rtti                                                        \
-                 -fno-exceptions                                                  \
-                 -fno-use-cxa-atexit
+                 -fno-use-cxa-atexit                                              \
+                 -fno-nonansi-builtins                                            \
+                 -fno-threadsafe-statics                                          \
+                 -fno-enforce-eh-specs                                            \
+                 -ftemplate-depth=128                                             \
+                 -Wzero-as-null-pointer-constant
 
 
 LDFLAGS        = $(CPPFLAGS)                                                      \
@@ -171,7 +200,9 @@ $(PATH_BIN)/target.elf : $(FILES_O)
 $(PATH_OBJ)/%.o : %.c
 	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
 	@-$(CC) -x c -std=c11 $(CFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
+	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
 
 $(PATH_OBJ)/%.o : %.cpp
 	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
 	@$(CC) -x c++ -std=c++17 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
+	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err

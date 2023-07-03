@@ -6,6 +6,8 @@ teensy-4_nxp_iMXRT1062
         <img src="https://github.com/Embedded-System-Lovers/teensy-4_nxp_iMXRT1062/actions/workflows/teensy-4_nxp_iMXRT1062.yml/badge.svg" alt="Build Status"></a>
     <a href="https://github.com/Embedded-System-Lovers/teensy-4_nxp_iMXRT1062/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">
         <img src="https://custom-icon-badges.herokuapp.com/github/issues-raw/Embedded-System-Lovers/teensy-4_nxp_iMXRT1062?logo=github" alt="Issues" /></a>
+    <a href="https://github.com/Embedded-System-Lovers/teensy-4_nxp_iMXRT1062/blob/master/LICENSE_1_0.txt">
+        <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
     <a href="https://github.com/Embedded-System-Lovers/teensy-4_nxp_iMXRT1062" alt="GitHub code size in bytes">
         <img src="https://img.shields.io/github/languages/code-size/Embedded-System-Lovers/teensy-4_nxp_iMXRT1062" /></a>
 </p>
@@ -17,6 +19,7 @@ _bare_ _metal_ Blinky Project for the NXP ARM Cortex-M7 iMXRT1062
 Features include:
   - boot through the board's standard bootloader,
   - timebase derived from `SysTick`,
+  - PLL frequency increased to 600 MHz,
   - blinky LED show with adjustable frequency,
   - implementation in C++17/C11 with absolute minimal use of assembly.
 
@@ -36,9 +39,9 @@ Following the bootloader's low-level chip initialization,
 the program jumps to our own self-written startup stub
 called `__my_startup()` in [crt0.cpp](./Src/startup/crt0.cpp).
 
-After a few more initializations in `__my_startup()`, control is
-transfered to the `main()` subroutine. Here the timer interrupt is setup
-for LED blinky.
+After a few more initializations in `__my_startup()`, control is transfered to
+[`main()`](https://github.com/Embedded-System-Lovers/teensy-4_nxp_iMXRT1062/blob/d83a96c04f952991e91b0569b6c69bc3e3dad5e0/Src/Appli/Appli.cpp#L26).
+Here the simple LED blinky show is executed.
 
 The adjustable LED-phase (its half-period) can be tuned
 to provide a rudimentary, visible blinky LED show.
@@ -101,6 +104,14 @@ build(s) including result verification on both
 `windows-latest` as well as `ubuntu-latest`
 using GitHub Actions.
 
+## Hardware Setup
+
+The Teensy 4.0 is used with no modifications whatsoever
+straight out-of-the-box. The hardware setup in action
+is pictured in the image below.
+
+![](./images/teensy_blinky.jpg)
+
 ## Licensing
 
-This project is licensed under [BSL 1.0](./LICENSE_1_0.txt).
+This software project is licensed under [BSL 1.0](./LICENSE_1_0.txt).
