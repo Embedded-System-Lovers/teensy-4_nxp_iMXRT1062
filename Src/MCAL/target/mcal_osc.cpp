@@ -6,6 +6,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#if defined(__GNUC__)
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wvolatile"
+#endif
+
 #include <mcal_osc.h>
 
 #define CCM_ANALOG_PLL_ARM      *(volatile unsigned int*)(0x400D8000UL) /*BootROM forced to 0x80002042*/
@@ -45,3 +50,7 @@ auto mcal::osc::init() noexcept -> void
   // Switch the CPU Subsystem clock to the new PLL1 value (of 600 MHz).
   CCM_CBCMR = (CCM_CBCMR & (~(3UL << 18U))) | (3UL << 18U);
 }
+
+#if defined(__GNUC__)
+  #pragma GCC diagnostic pop
+#endif
