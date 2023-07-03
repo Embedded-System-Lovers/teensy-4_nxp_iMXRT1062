@@ -40,12 +40,9 @@
              const register_value_type value = static_cast<register_value_type>(0)>
     struct reg_access_static
     {
-      static register_value_type
-                  reg_get() { volatile register_value_type* pa = reinterpret_cast<register_value_type*>(address); return *pa; }
-
-      static void reg_set() { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa =       value; }
-
-      static void reg_or () { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = *pa | value; }
+      static auto reg_get() -> register_value_type { volatile register_value_type* pa = reinterpret_cast<register_value_type*>(address); return *pa; }
+      static auto reg_set() -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = value; }
+      static auto reg_or () -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = static_cast<register_value_type>(*pa | value); }
     };
   };
 
