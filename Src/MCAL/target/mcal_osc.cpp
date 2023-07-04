@@ -6,51 +6,46 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#if defined(__GNUC__)
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wvolatile"
-#endif
-
+#include <MCAL/mcal_reg_access_static.h>
 #include <mcal_osc.h>
-
-#define CCM_ANALOG_PLL_ARM      *(volatile unsigned int*)(0x400D8000UL) /*BootROM forced to 0x80002042*/
-#define CCM_ANALOG_PLL_ARM_SET  *(volatile unsigned int*)(0x400D8004UL)
-#define CCM_ANALOG_PLL_ARM_CLR  *(volatile unsigned int*)(0x400D8008UL)
-#define CCM_ANALOG_PLL_ARM_TOG  *(volatile unsigned int*)(0x400D800CUL)
-
-#define CCM_CBCDR               *(volatile unsigned int*)(0x400FC014UL) /*BootROM forced to 0x000A8200*/
-#define CCM_CACRR               *(volatile unsigned int*)(0x400FC010UL) /*BootROM forced to 0x00000001*/
-#define CCM_CBCMR               *(volatile unsigned int*)(0x400FC018UL) /*BootROM forced to 0x75AE8104*/
-
-#define DCDC_REG0               *(volatile unsigned int*)(0x40080000UL)
-#define DCDC_REG3               *(volatile unsigned int*)(0x4008000CUL)
+#include <mcal_reg.h>
 
 auto mcal::osc::init() noexcept -> void
 {
   // Increase the power.
-  DCDC_REG3 = (DCDC_REG3 & (~(0x1FUL))) | 0x1FUL;
+  //DCDC_REG3 = (DCDC_REG3 & (~(0x1FUL))) | 0x1FUL;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::dcdc_reg3, static_cast<std::uint32_t>(UINT32_C(0x1F))>::reg_msk<static_cast<std::uint32_t>(UINT32_C(0x1F))>();
 
-  while((DCDC_REG0 & 0x80000000UL) != 0x80000000UL);
+  //while((DCDC_REG0 & 0x80000000UL) != 0x80000000UL);
+  while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::dcdc_reg0, static_cast<std::uint32_t>(UINT32_C(31))>::bit_get())
+  {
+    ;
+  }
 
   // Switch the temporary CPU Subsystem clock to PLL2 (528 MHz).
-  CCM_CBCMR = (CCM_CBCMR & (~(3UL << 18U)));
+  //CCM_CBCMR = (CCM_CBCMR & (~(3UL << 18U)));
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::ccm_cbcmr, static_cast<std::uint32_t>(~(3UL << 18U))>::reg_and();
 
   // Enable the PLL1 bypass.
-  CCM_ANALOG_PLL_ARM = (CCM_ANALOG_PLL_ARM & (~(3UL << 14U))) | (1UL << 16U);
+  //CCM_ANALOG_PLL_ARM = (CCM_ANALOG_PLL_ARM & (~(3UL << 14U))) | (1UL << 16U);
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::ccm_analog_pll_arm, static_cast<std::uint32_t>(1UL << 16U)>::reg_msk<static_cast<std::uint32_t>(3UL << 14U)>();
 
   // Set PLL1 to 600 MHz.
-  CCM_ANALOG_PLL_ARM = (CCM_ANALOG_PLL_ARM & (~((0x7FUL << 0U) | (1UL << 12U)))) | (1UL << 13U) | 0x64U;
+  //CCM_ANALOG_PLL_ARM = (CCM_ANALOG_PLL_ARM & (~((0x7FUL << 0U) | (1UL << 12U)))) | (1UL << 13U) | 0x64U;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::ccm_analog_pll_arm, static_cast<std::uint32_t>(static_cast<std::uint32_t>(1UL << 13U) | static_cast<std::uint32_t>(UINT32_C(0x64)))>::reg_msk<static_cast<std::uint32_t>(static_cast<std::uint32_t>(UINT32_C(0x7F)) | static_cast<std::uint32_t>(1UL << 12U))>();
 
   // Wait for the PLL1 to lock.
-  while ((CCM_ANALOG_PLL_ARM & 0x80000000UL) == 0UL);
+  //while((CCM_ANALOG_PLL_ARM & 0x80000000UL) == 0UL);
+  while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::ccm_analog_pll_arm, static_cast<std::uint32_t>(UINT32_C(31))>::bit_get())
+  {
+    ;
+  }
 
   // Disable the PLL1 bypass.
-  CCM_ANALOG_PLL_ARM &= ~(1UL << 16U);
+  //CCM_ANALOG_PLL_ARM &= ~(1UL << 16U);
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::ccm_analog_pll_arm, static_cast<std::uint32_t>(~(1UL << 16U))>::reg_and();
 
   // Switch the CPU Subsystem clock to the new PLL1 value (of 600 MHz).
-  CCM_CBCMR = (CCM_CBCMR & (~(3UL << 18U))) | (3UL << 18U);
+  //CCM_CBCMR = (CCM_CBCMR & (~(3UL << 18U))) | (3UL << 18U);
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::ccm_cbcmr, static_cast<std::uint32_t>(3UL << 18U)>::reg_msk<static_cast<std::uint32_t>(3UL << 18U)>();
 }
-
-#if defined(__GNUC__)
-  #pragma GCC diagnostic pop
-#endif

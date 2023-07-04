@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef LED_2023_07_01_H
-  #define LED_2023_07_01_H
+#ifndef MCAL_LED_2023_07_01_H
+  #define MCAL_LED_2023_07_01_H
 
   #if defined(__cplusplus)
   extern "C"
@@ -22,4 +22,4 @@
   }
   #endif
 
-#endif /* LED_2023_07_01_H */
+#endif // MCAL_LED_2023_07_01_H
