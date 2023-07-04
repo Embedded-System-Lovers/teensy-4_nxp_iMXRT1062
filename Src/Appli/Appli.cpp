@@ -9,7 +9,7 @@
 
 #include <mcal_gpt.h>
 #include <mcal_irq.h>
-#include <MCAL/led.h>
+#include <MCAL/mcal_led.h>
 #include <util/utility/util_time.h>
 
 namespace local

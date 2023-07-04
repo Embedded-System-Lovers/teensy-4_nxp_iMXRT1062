@@ -98,13 +98,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Src\Appli\Appli.cpp" />
-    <ClCompile Include="..\..\Src\MCAL\host\led.cpp">
+    <ClCompile Include="..\..\Src\MCAL\host\mcal_led.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='target|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Src\MCAL\host\mcal_gpt.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='target|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\Src\MCAL\target\led.cpp">
+    <ClCompile Include="..\..\Src\MCAL\target\mcal_led.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -152,8 +152,10 @@
     <ClInclude Include="..\..\Src\MCAL\host\mcal_irq.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='target|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\Src\MCAL\led.h" />
+    <ClInclude Include="..\..\Src\MCAL\mcal_led.h" />
     <ClInclude Include="..\..\Src\MCAL\mcal_gpt_arm_sys_tick.h" />
+    <ClInclude Include="..\..\Src\MCAL\mcal_reg_access_dynamic.h" />
+    <ClInclude Include="..\..\Src\MCAL\mcal_reg_access_static.h" />
     <ClInclude Include="..\..\Src\MCAL\target\mcal_osc.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -166,6 +168,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\target\mcal_reg.h" />
     <ClInclude Include="..\..\Src\util\utility\util_noexcept.h" />
     <ClInclude Include="..\..\Src\util\utility\util_time.h" />
   </ItemGroup>

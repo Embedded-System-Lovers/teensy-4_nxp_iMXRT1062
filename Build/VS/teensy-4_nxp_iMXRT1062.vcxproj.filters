@@ -46,10 +46,10 @@
     <ClCompile Include="..\..\Src\startup\mcal_gcc_cxx_completion.cpp">
       <Filter>Src\startup</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Src\MCAL\host\led.cpp">
+    <ClCompile Include="..\..\Src\MCAL\host\mcal_led.cpp">
       <Filter>Src\MCAL\host</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Src\MCAL\target\led.cpp">
+    <ClCompile Include="..\..\Src\MCAL\target\mcal_led.cpp">
       <Filter>Src\MCAL\target</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Src\startup\bootdata.c">
@@ -69,7 +69,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Src\MCAL\led.h">
+    <ClInclude Include="..\..\Src\MCAL\mcal_led.h">
       <Filter>Src\MCAL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Src\MCAL\mcal_gpt_arm_sys_tick.h">
@@ -94,6 +94,15 @@
       <Filter>Src\MCAL\target</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Src\MCAL\target\mcal_osc.h">
+      <Filter>Src\MCAL\target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\mcal_reg_access_dynamic.h">
+      <Filter>Src\MCAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\mcal_reg_access_static.h">
+      <Filter>Src\MCAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\target\mcal_reg.h">
       <Filter>Src\MCAL\target</Filter>
     </ClInclude>
   </ItemGroup>

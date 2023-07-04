@@ -120,7 +120,7 @@ LDFLAGS        = $(CPPFLAGS)                                                    
                  -Wl,-Map,$(PATH_BIN)/target.map
 
 SRC_FILES      = $(PATH_SRC)/Appli/Appli                                          \
-                 $(PATH_SRC)/MCAL/target/led                                      \
+                 $(PATH_SRC)/MCAL/target/mcal_led                                 \
                  $(PATH_SRC)/MCAL/target/mcal_gpt                                 \
                  $(PATH_SRC)/MCAL/target/mcal_irq                                 \
                  $(PATH_SRC)/MCAL/target/mcal_osc                                 \
