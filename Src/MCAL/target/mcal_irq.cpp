@@ -5,7 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <cstddef>
 #include <cstdint>
 
 #include <mcal_irq.h>

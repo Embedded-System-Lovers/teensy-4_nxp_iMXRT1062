@@ -8,7 +8,7 @@
 
 // Generic Cortex-M startup code.
 
-#include <mcal_osc.h>
+#include <mcal_cpu.h>
 
 namespace crt
 {
@@ -26,7 +26,7 @@ void __my_startup()
   // So we do nothing here.
 
   // Oscillator initialization.
-  mcal::osc::init();
+  mcal::cpu::init();
 
   // Initialize statics from ROM to RAM.
   // Zero-clear default-initialized static RAM.
