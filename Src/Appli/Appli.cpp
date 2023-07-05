@@ -7,6 +7,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_cpu.h>
 #include <mcal_gpt.h>
 #include <mcal_irq.h>
 #include <MCAL/mcal_led.h>
@@ -29,6 +30,8 @@ int main()
   mcal::irq::init(nullptr);
 
   mcal_led_init();
+
+  mcal::cpu::post_init();
 
   for(;;)
   {

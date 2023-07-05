@@ -67,6 +67,9 @@
     <ClCompile Include="..\..\Src\MCAL\target\mcal_osc.cpp">
       <Filter>Src\MCAL\target</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Src\MCAL\target\mcal_cpu.cpp">
+      <Filter>Src\MCAL\target</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Src\MCAL\mcal_led.h">
@@ -104,6 +107,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Src\MCAL\target\mcal_reg.h">
       <Filter>Src\MCAL\target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\target\mcal_cpu.h">
+      <Filter>Src\MCAL\target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\MCAL\host\mcal_cpu.h">
+      <Filter>Src\MCAL\host</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@
 //
 
 #include <MCAL/mcal_reg_access_static.h>
+#include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg.h>
 
@@ -16,10 +17,10 @@ auto mcal::osc::init() noexcept -> void
   //DCDC_REG3 = (DCDC_REG3 & (~(0x1FUL))) | 0x1FUL;
   mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::dcdc_reg3, static_cast<std::uint32_t>(UINT32_C(0x1F))>::reg_msk<static_cast<std::uint32_t>(UINT32_C(0x1F))>();
 
-  //while((DCDC_REG0 & 0x80000000UL) != 0x80000000UL);
+  //while((DCDC_REG0 & 0x80000000UL) == 0UL);
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::dcdc_reg0, static_cast<std::uint32_t>(UINT32_C(31))>::bit_get())
   {
-    ;
+    mcal::cpu::nop();
   }
 
   // Switch the temporary CPU Subsystem clock to PLL2 (528 MHz).
@@ -34,11 +35,11 @@ auto mcal::osc::init() noexcept -> void
   //CCM_ANALOG_PLL_ARM = (CCM_ANALOG_PLL_ARM & (~((0x7FUL << 0U) | (1UL << 12U)))) | (1UL << 13U) | 0x64U;
   mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::ccm_analog_pll_arm, static_cast<std::uint32_t>(static_cast<std::uint32_t>(1UL << 13U) | static_cast<std::uint32_t>(UINT32_C(0x64)))>::reg_msk<static_cast<std::uint32_t>(static_cast<std::uint32_t>(UINT32_C(0x7F)) | static_cast<std::uint32_t>(1UL << 12U))>();
 
-  // Wait for the PLL1 to lock.
+  // Wait for PLL1 to lock.
   //while((CCM_ANALOG_PLL_ARM & 0x80000000UL) == 0UL);
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::ccm_analog_pll_arm, static_cast<std::uint32_t>(UINT32_C(31))>::bit_get())
   {
-    ;
+    mcal::cpu::nop();
   }
 
   // Disable the PLL1 bypass.

@@ -5,17 +5,17 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_IRQ_2010_04_10_H
-  #define MCAL_IRQ_2010_04_10_H
+#ifndef MCAL_CPU_2023_07_05_H
+  #define MCAL_CPU_2023_07_05_H
 
   namespace mcal
   {
-    namespace irq
+    namespace cpu
     {
-      using config_type = void;
-
-      auto init(const config_type*) noexcept -> void;
+      inline auto post_init() -> void;
     }
   }
 
-#endif // MCAL_IRQ_2010_04_10_H
+  inline auto mcal::cpu::post_init() -> void { }
+
+#endif // MCAL_IRQ_2023_07_02_H
