@@ -27,8 +27,8 @@ $(HASH)        := \#
 DQUOTE         := \"
 $(DQUOTE)      := \"
 
-PERCENT        := \"
-$(PERCENT)     := \"
+PERCENT        := \%
+$(PERCENT)     := \%
 
 DOLLAR         := $$
 $(DOLLAR)      := $$
