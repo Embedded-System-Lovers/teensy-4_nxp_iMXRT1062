@@ -17,6 +17,22 @@ PATH_BIN        = $(CURDIR)/../Bin/target_x64
 
 MY_NUL         :=
 
+###############################################################################
+# Punctuation
+###############################################################################
+
+HASH           := \#
+$(HASH)        := \#
+
+DQUOTE         := \"
+$(DQUOTE)      := \"
+
+PERCENT        := \%
+$(PERCENT)     := \%
+
+DOLLAR         := $$
+$(DOLLAR)      := $$
+
 ifeq ($(TYP_OS),win)
 
 PATH_TOOLS = $(CURDIR)/../tools
@@ -46,10 +62,11 @@ OBJCOPY         = arm-none-eabi-objcopy
 OBJDUMP         = arm-none-eabi-objdump
 READELF         = arm-none-eabi-readelf
 
-MAKE            = make
 ECHO            = echo
-RM              = rm
+MAKE            = make
 MKDIR           = mkdir
+RM              = rm
+SED             = sed
 
 MY_NUL         := /dev/null
 
@@ -201,9 +218,9 @@ $(PATH_BIN)/target.elf : $(FILES_O)
 $(PATH_OBJ)/%.o : %.c
 	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
 	@-$(CC) -x c -std=c11 $(CFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
-	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
+	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
 
 $(PATH_OBJ)/%.o : %.cpp
 	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
-	@-$(CC) -x c++ -std=c++20 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
-	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
+	@-$(CC) -x c++ -std=c++17 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
+	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
