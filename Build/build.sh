@@ -7,8 +7,10 @@ SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 cd ../..
 
 git log -n 1 --pretty=format:"Current Used Branch/Commit: - %d - %H"
+echo
 
 cd Build/VS
+echo
 
 build_command="make -f $SCRIPT_DIR/Make/make_000.gmk TYP_OS=unix $1"
 
