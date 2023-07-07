@@ -17,6 +17,22 @@ PATH_BIN        = $(CURDIR)/../Bin/target_x64
 
 MY_NUL         :=
 
+###############################################################################
+# Punctuation
+###############################################################################
+
+HASH           := \#
+$(HASH)        := \#
+
+DQUOTE         := \"
+$(DQUOTE)      := \"
+
+PERCENT        := \"
+$(PERCENT)     := \"
+
+DOLLAR         := $$
+$(DOLLAR)      := $$
+
 ifeq ($(TYP_OS),win)
 
 PATH_TOOLS = $(CURDIR)/../tools
@@ -37,6 +53,8 @@ SED             = $(PATH_TOOLS_UTIL)/bin/sed.exe
 
 MY_NUL         := NUL
 
+RULE_GIT_INFO  := $(ECHO) Git commit info unavailable
+
 endif
 
 ifeq ($(TYP_OS),unix)
@@ -48,10 +66,14 @@ READELF         = arm-none-eabi-readelf
 
 MAKE            = make
 ECHO            = echo
+GIT             = git
 RM              = rm
 MKDIR           = mkdir
 
 MY_NUL         := /dev/null
+
+RULE_GIT_INFO  := $(GIT) log -n 1 --pretty=format:$(DQUOTE)Current Used Branch/Commit: - $(PERCENT)d - $(PERCENT)H$(DQUOTE)
+RULE_GIT_INFO  := $(GIT) --version && $(ECHO) $(RULE_GIT_INFO) && $(RULE_GIT_INFO)
 
 endif
 
@@ -175,6 +197,9 @@ clean_prj :
 
 .PHONY : version
 version :
+	@$(ECHO) +++ print Git commit info
+	@-$(RULE_GIT_INFO)
+	@$(ECHO)
 	@$(ECHO) +++ print GNUmake version
 	@$(MAKE) --version
 	@$(ECHO)
