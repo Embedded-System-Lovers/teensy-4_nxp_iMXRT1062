@@ -53,8 +53,6 @@ SED             = $(PATH_TOOLS_UTIL)/bin/sed.exe
 
 MY_NUL         := NUL
 
-RULE_GIT_INFO  := $(ECHO) Git commit info unavailable
-
 endif
 
 ifeq ($(TYP_OS),unix)
@@ -64,16 +62,13 @@ OBJCOPY         = arm-none-eabi-objcopy
 OBJDUMP         = arm-none-eabi-objdump
 READELF         = arm-none-eabi-readelf
 
-MAKE            = make
 ECHO            = echo
-GIT             = git
-RM              = rm
+MAKE            = make
 MKDIR           = mkdir
+RM              = rm
+SED             = sed
 
 MY_NUL         := /dev/null
-
-RULE_GIT_INFO  := $(GIT) log -n 1 --pretty=format:$(DQUOTE)Current Used Branch/Commit: - $(PERCENT)d - $(PERCENT)H$(DQUOTE)
-RULE_GIT_INFO  := $(GIT) --version && $(ECHO) $(RULE_GIT_INFO) && $(RULE_GIT_INFO)
 
 endif
 
@@ -197,9 +192,6 @@ clean_prj :
 
 .PHONY : version
 version :
-	@$(ECHO) +++ print Git commit info
-	@-$(RULE_GIT_INFO)
-	@$(ECHO)
 	@$(ECHO) +++ print GNUmake version
 	@$(MAKE) --version
 	@$(ECHO)
@@ -226,9 +218,9 @@ $(PATH_BIN)/target.elf : $(FILES_O)
 $(PATH_OBJ)/%.o : %.c
 	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
 	@-$(CC) -x c -std=c11 $(CFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
-	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
+	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
 
 $(PATH_OBJ)/%.o : %.cpp
 	@-$(ECHO) +++ compile: $(subst \,/,$<) to $(subst \,/,$@)
-	@-$(CC) -x c++ -std=c++20 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
-	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
+	@-$(CC) -x c++ -std=c++17 $(CPPFLAGS) -c $< -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_OBJ)/$(basename $(@F)).err
+	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_OBJ)/$(basename $(@F)).err
