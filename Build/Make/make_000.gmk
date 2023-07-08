@@ -21,18 +21,6 @@ MY_NUL         :=
 # Punctuation
 ###############################################################################
 
-HASH           := \#
-$(HASH)        := \#
-
-DQUOTE         := \"
-$(DQUOTE)      := \"
-
-PERCENT        := \%
-$(PERCENT)     := \%
-
-DOLLAR         := $$
-$(DOLLAR)      := $$
-
 ifeq ($(TYP_OS),win)
 
 PATH_TOOLS = $(CURDIR)/../tools
